@@ -1,17 +1,33 @@
 \documentclass{article}
 \usepackage[T1]{fontenc}
+<<setup, include=FALSE, cache=FALSE>>=
+library(knitr)
+opts_knit$set(echo=FALSE)
+opts_chunk$set(echo=FALSE)
+source("prepareReport.R")
+#1+1
+#letters
+#%chartr('xie', 'XIE', c('xie yihui', 'Yihui Xie'))
+#%par(mar=c(4, 4, .2, .2)); plot(rnorm(100))
+@
 
 \begin{document}
+%This first sequence is not automatized.
+The dataset given was entered in August 14 of 2015 and covers largely the period from end of 2011 until the third quarter of 2015. The inspections covered \Sexpr{n.rest} establishments. Overall, there were \Sexpr{nrow(dfi)} inspections, of which \Sexpr{bor["BRONX"]} in Bronx, \Sexpr{bor["BROOKLYN"]} in Brooklyn, \Sexpr{bor["MANHATTAN"]} in Manhattan, \Sexpr{bor["QUEENS"]} in Queens, and \Sexpr{bor["STATEN ISLAND"]} on the Staten Island. The distribution of inspection types is as follows:
+```{r insp types}
+kable(t.insptype)
+```
+Most inspection are just regular cycle inspections. About \Sexpr{100*(t.actions["closed"] + t.actions["reclosed"])}\% of inspections resulted in a closure.
 
-Here is a code chunk.
+
+
+
+
+You can also write inline expressions, e.g. $\pi=\Sexpr{pi}$, and \Sexpr{1.598673e8} is a big number.
 
 <<test>>=
 1+1
 letters
-chartr('xie', 'XIE', c('xie yihui', 'Yihui Xie'))
-par(mar=c(4, 4, .2, .2)); plot(rnorm(100))
 @
-
-You can also write inline expressions, e.g. $\pi=\Sexpr{pi}$, and \Sexpr{1.598673e8} is a big number.
 
 \end{document}
