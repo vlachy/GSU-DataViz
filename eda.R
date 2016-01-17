@@ -239,3 +239,4 @@ dfiz <- dfi %>% group_by(zip) %>%
 ggmap(map.NY) + geom_point(aes(x=lon,y=lat,color=unusual,size=n.rest),data=dfiz) +
 		scale_color_gradient(low="white",high="red")		
 
++++++++++++++++++++++++++++
