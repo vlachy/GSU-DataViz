@@ -26,6 +26,7 @@ colCl["score"] <- "numeric"
 df <- read.csv("../inspection.csv",col.names=colNm,colClasses=colCl,na.strings="")
 
 Hmisc::describe(df) #To overcome masking
+table(df$cuisine)
 
 #----------------------------
 #Recode actions and violations
@@ -126,7 +127,9 @@ df$score[df$score==-1] <- NA_integer_
 # Also w.r.t. timing and violations.
 #----------------------------
 df <- arrange(df,id,inspect.dt)
-#Group by inspection
+
+#Group by inspection (we discovered each row is a violation by cut/paste into
+#Excel. Table structure: violations --> inspections --> establishments
 dfi <- ddply(df,c("id","inspect.dt"), function(insp){
 			insp[1,c("name","cuisine","action","score","reason","timing")]
 		})
@@ -238,5 +241,3 @@ dfiz <- dfi %>% group_by(zip) %>%
 		)
 ggmap(map.NY) + geom_point(aes(x=lon,y=lat,color=unusual,size=n.rest),data=dfiz) +
 		scale_color_gradient(low="white",high="red")		
-
-+++++++++++++++++++++++++++
