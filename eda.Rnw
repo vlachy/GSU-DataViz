@@ -1,34 +1,54 @@
 \documentclass{article}
 \usepackage[T1]{fontenc}
+\usepackage{rotating}
 <<setup, include=FALSE, cache=FALSE>>=
 library(knitr)
 opts_knit$set(echo=FALSE)
 opts_chunk$set(echo=FALSE)
+options(digits=2)
+@
+<<getData, include=FALSE, cache=FALSE>>=
 source("prepareReport.R")
-#1+1
-#letters
-#%chartr('xie', 'XIE', c('xie yihui', 'Yihui Xie'))
-#%par(mar=c(4, 4, .2, .2)); plot(rnorm(100))
 @
 
 \begin{document}
 %This first sequence is not automatized.
-The dataset given was entered in August 14 of 2015 and covers largely the period from end of 2011 until the third quarter of 2015. The inspections covered \Sexpr{n.rest} establishments. Overall, there were \Sexpr{nrow(dfi)} inspections, of which \Sexpr{bors["BRONX"]} in Bronx, \Sexpr{bors["BROOKLYN"]} in Brooklyn, \Sexpr{bors["MANHATTAN"]} in Manhattan, \Sexpr{bors["QUEENS"]} in Queens, and \Sexpr{bors["STATEN ISLAND"]} on the Staten Island. The distribution of inspection types is as follows:
-```{r insp types}
-kable(t.insptype)
-```
+The dataset given was entered on August 14 of 2015 and covers largely the period from end of 2011 until the third quarter of 2015. The inspections covered \Sexpr{n.rest} establishments. Overall, there were \Sexpr{nrow(dfi)} inspections, of which \Sexpr{bors["BRONX"]} in Bronx, \Sexpr{bors["BROOKLYN"]} in Brooklyn, \Sexpr{bors["MANHATTAN"]} in Manhattan, \Sexpr{bors["QUEENS"]} in Queens, and \Sexpr{bors["STATEN ISLAND"]} on the Staten Island. The distribution of inspection types is in Tables \ref{Insp1} and \ref{Insp2}.
+\begin{sidewaystable}[p]
+<<inspTypes>>=
+knitr::kable(t.insptype.main)
+@
+\caption{Main inspection types}
+\label{Insp1}
+\end{sidewaystable}
+\
+\begin{sidewaystable}[p]
+<<inspTypes2>>=
+knitr::kable(t.insptype.other)
+@
+\caption{Other inspection types}
+\label{Insp2}
+\end{sidewaystable}
 Most inspection are just regular cycle inspections. About \Sexpr{100*(t.actions["closed"] + t.actions["reclosed"])}\% of inspections resulted in a closure.
 
-The most common violations found during an inspection were \Sexpr{names(t.viol)[1]} (\Sexpr{t.viol[1]} cases), Sexpr{names(t.viol)[2]} (\Sexpr{t.viol[2]} cases), and Sexpr{names(t.viol)[3]} (\Sexpr{t.viol[3]} cases).
-
-The typical time to new cycle inspection is usually a half year or a year as one can see in the following plot.
+The most common violations found during an inspection were 
+\begin{enumerate}
+\item ``\Sexpr{names(t.viol)[1]}'' (\Sexpr{t.viol[1]} cases),
+\item ``\Sexpr{names(t.viol)[2]}'' (\Sexpr{t.viol[2]} cases),
+\item ``\Sexpr{names(t.viol)[3]}'' (\Sexpr{t.viol[3]} cases).
+\end{enumerate}
+The typical time to new cycle inspection is usually a half year or a year as one can in Figure \ref{TTNCI}.
+\begin{figure}
+\centering
 <<figScores,dev='png'>>=
 p.reinspect
 @
+\caption{Time to new cycle inspection}
+\label{TTNCI}
+\end{figure}
 This period tends to be shorter if previous inspection found serious deficiencies. After an initial inspection, the reinspection typically follows very shortly.
 
-%TODO: Show the remaining plots
-%TODO: Fix this report
+
 
 
 

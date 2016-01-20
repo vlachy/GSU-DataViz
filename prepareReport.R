@@ -14,6 +14,7 @@ library(lubridate)
 library(zipcode)
 library(ggmap)
 data(zipcode)
+library(stringr)
 
 library(ggthemes)
 theme_set(theme_tufte(base_family="sans")) #Set better plotting...
@@ -39,6 +40,8 @@ bors <- table(df[match(dfi$id,df$id),"borrough"])
 
 # Inspections by types
 t.insptype <- table(dfi$reason,dfi$timing)
+t.insptype.main <- t.insptype[,c("Initial Inspection","Re-inspection","Compliance Inspection")]
+t.insptype.other <- t.insptype[,c("Second Compliance Inspection","Limited Inspection","Reopening Inspection")]
 
 # Actions: Particularly closures
 t.actions <- prop.table(table(dfi$action))
@@ -47,6 +50,8 @@ t.actions <- prop.table(table(dfi$action))
 t.viol <- table(df$violation.cd)
 names(t.viol) <- vcodes[match(names(t.viol),vcodes$violation.cd),"violation.desc"]
 t.viol <- sort(t.viol,decreasing=T)
+names(t.viol) <- gsub("[^[:print:]]","",names(t.viol))
+
 
 # Plot: Typical inspection cycle
 dfic <- subset(dfi,reason=="Cycle Inspection" & timing %in% c("Initial Inspection",
