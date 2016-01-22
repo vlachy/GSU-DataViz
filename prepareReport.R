@@ -3,7 +3,7 @@
 # 
 ###############################################################################
 .libPaths(c(.libPaths(),"~/.R"))
-setwd("~/Dropbox/comp/GSU/GSU-DataViz/")
+## setwd("~/Dropbox/comp/GSU/GSU-DataViz/")
 library(Hmisc)
 library(plyr)
 library(dplyr)

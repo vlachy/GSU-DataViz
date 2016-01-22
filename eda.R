@@ -2,20 +2,17 @@
 # Try out the content 
 # 
 ###############################################################################
-setwd("~/Dropbox/comp/GSU/GSU-DataViz/")
+rm(list=ls())
+## setwd("~/Dropbox/comp/GSU/GSU-DataViz/")
 library(Hmisc)
 library(plyr)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 
-
-
 ###############################################################################
 # Set up
 ###############################################################################
-
-
 
 colNm <- c("id","name","borrough","bld","street",
 		"zip","phone","cuisine","inspect.dt","action",
@@ -23,7 +20,7 @@ colNm <- c("id","name","borrough","bld","street",
 		"grade.dt","record.dt","inspection.type")
 colCl <- rep("character",times=length(colNm)); names(colCl) <- colNm
 colCl["score"] <- "numeric"
-df <- read.csv("../inspection.csv",col.names=colNm,colClasses=colCl,na.strings="")
+df <- read.csv("../inspection.csv",col.names=colNm,colClasses=colCl,na.strings="") ## csv file is also on dropbox account
 
 Hmisc::describe(df) #To overcome masking
 table(df$cuisine)
@@ -83,11 +80,11 @@ table(is.na(df$name)) #OK, the rest is fine.
 #----------------------------
 
 library(stringr)
+table(df$inspection.type)
 df <- separate(df,inspection.type,into=c("reason","timing"),sep="/")
 df$reason <- str_trim(df$reason)
 df$timing <- str_trim(df$timing)
 table(df$reason,df$timing)
-
 
 #----------------------------
 #ids vs names?
@@ -95,6 +92,7 @@ table(df$reason,df$timing)
 length(unique(df$id))
 length(unique(df$name))
 ids.by.name <- data.frame( df %>% group_by(name) %>%  summarize(n.id=n_distinct(id)))
+table(ids.by.name$n.id)
 subset(ids.by.name,n.id==17) #This makes sense. These are chains
 subset(ids.by.name,n.id==215) #Ditto
 subset(ids.by.name,n.id==9)
@@ -103,6 +101,12 @@ subset(ids.by.name,n.id==3) #These are probably either common names or small cha
 subset(df,name=="PINKBERRY") #And different ids are on different addresses... That says it all.
 #So ids are identifiers of the establishment.
 
+#----------------------------
+#Structure of the dataset
+#----------------------------
+head(df)
+df <- arrange(df,id,inspect.dt)
+write.csv(df[1:200,], "test.csv")
 #----------------------------
 #There is a point when you end up looking for the dictionary...
 # E.g., how is "score" coded? What does "grade" stand for?
@@ -126,7 +130,6 @@ df$score[df$score==-1] <- NA_integer_
 #Explore the cycles of inspections
 # Also w.r.t. timing and violations.
 #----------------------------
-df <- arrange(df,id,inspect.dt)
 
 #Group by inspection (we discovered each row is a violation by cut/paste into
 #Excel. Table structure: violations --> inspections --> establishments

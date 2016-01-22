@@ -12,6 +12,7 @@ source("prepareReport.R")
 @
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 %This first sequence is not automatized.
 The dataset given was entered on August 14 of 2015 and covers largely the period from end of 2011 until the third quarter of 2015. The inspections covered \Sexpr{n.rest} establishments. Overall, there were \Sexpr{nrow(dfi)} inspections, of which \Sexpr{bors["BRONX"]} in Bronx, \Sexpr{bors["BROOKLYN"]} in Brooklyn, \Sexpr{bors["MANHATTAN"]} in Manhattan, \Sexpr{bors["QUEENS"]} in Queens, and \Sexpr{bors["STATEN ISLAND"]} on the Staten Island. The distribution of inspection types is in Tables \ref{Insp1} and \ref{Insp2}.
 \begin{sidewaystable}[p]
